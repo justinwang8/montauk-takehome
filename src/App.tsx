@@ -10,7 +10,7 @@ const App: React.FC = () => {
     const [selectedArrivalAirport, setSelectedArrivalAirport] = useState<string>('');
     const [startingCoordinates, setStartingCoordinates] = useState<Coordinates | null>(null);
     const [endingCoordinates, setEndingCoordinates] = useState<Coordinates | null>(null);
-    const [totalDistance, setTotalDistance] = useState<string>('')
+    const [totalDistance, setTotalDistance] = useState<number | null>(null);
 
     const handleDepartureAirportSelect = (airport: any) => {
       setSelectedDepartureAirport(airport.place_id);
@@ -29,6 +29,7 @@ const App: React.FC = () => {
     try {
       // Calculate distance between departure and arrival
       let response = await fetch('/.netlify/functions/calculateDistance', {
+      // let response = await fetch('http://localhost:5001/api/calculateDistance', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,14 +43,14 @@ const App: React.FC = () => {
       if (response.ok) {
         let result = await response.json();
         console.log('Response from backend:', result);
-        setTotalDistance(result.distance)
-        alert('Data submitted successfully!');
+        setTotalDistance(result.distanceInMeters)
       } else {
         console.error('Failed to submit data');
       }
 
       // Fetch coordinates of departure airport
       let departureResponse = await fetch(`/.netlify/functions/getCoordinates/${selectedDepartureAirport}`);
+      // let departureResponse = await fetch(`http://localhost:5001/api/getCoordinates`);
       if (departureResponse.ok) {
           let departureData = await departureResponse.json();
           console.log(departureData)
@@ -61,6 +62,7 @@ const App: React.FC = () => {
 
       // Fetch coordinates of arrival airport
       let arrivalResponse = await fetch(`/.netlify/functions/getCoordinates/${selectedArrivalAirport}`);
+      // let arrivalResponse = await fetch(`http://localhost:5001/api/getCoordinates`);
       if (arrivalResponse.ok) {
           let arrivalData = await arrivalResponse.json();
           console.log(arrivalData)
@@ -80,7 +82,7 @@ const App: React.FC = () => {
       <div>
         <AirportAutocomplete onAirportSelect={handleDepartureAirportSelect} />
         <AirportAutocomplete onAirportSelect={handleArrivalAirportSelect} />
-        <h1>Total Distance: {parseInt(totalDistance) / 1.852} NM </h1>
+        <h1>Total Distance: {totalDistance !== null ? `${Math.round(totalDistance / 1852)} NM` : ''}</h1>
       </div>
       <div>
         <MapWithLine

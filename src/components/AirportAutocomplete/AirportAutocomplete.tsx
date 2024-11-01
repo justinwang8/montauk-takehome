@@ -11,7 +11,8 @@ const AirportAutocomplete: React.FC<AirportAutocompleteProps> = ({ onAirportSele
     if (!inputValue) return;
 
     try {
-      const response = await axios.get('/.netlify/functions/autocomplete', {
+      let response = await axios.get('/.netlify/functions/autocomplete', {
+      // let response = await axios.get('http://localhost:5001/api/autocomplete', {
         params: {
           input: inputValue,
         }
