@@ -8,7 +8,7 @@ export default async (req: Request, context: Context) => {
     return new Response(JSON.stringify({ error: "Departure and Arrival Airports must be provided" }), { status: 400 });
   }
 
-  const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:${departureAirport}&destinations=place_id:${arrivalAirport}&key=${process.env.GOOGLE_API_KEY}`;
+  const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:${departureAirport}&destinations=place_id:${arrivalAirport}&key=${Netlify.env.get("GOOGLE_API_KEY")}`;
 
   try {
     const response = await axios.get(apiUrl);

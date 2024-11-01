@@ -10,7 +10,7 @@ export default async (req: Request, context: Context) => {
 
   try {
     const response = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
-      params: { place_id: placeId, fields: "geometry", key: process.env.GOOGLE_API_KEY }
+      params: { place_id: placeId, fields: "geometry", key: Netlify.env.get("GOOGLE_API_KEY") }
     });
 
     const data = response.data;

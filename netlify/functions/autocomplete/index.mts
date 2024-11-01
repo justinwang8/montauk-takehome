@@ -11,7 +11,7 @@ export default async (req: Request, context: Context) => {
 
   try {
     const response = await axios.get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
-      params: { input, key: process.env.GOOGLE_API_KEY }
+      params: { input, key: Netlify.env.get("GOOGLE_API_KEY") }
     });
     return new Response(JSON.stringify(response.data), {
       headers: { "Content-Type": "application/json" }
