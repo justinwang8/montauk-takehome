@@ -72,7 +72,7 @@ const App: React.FC = () => {
     } catch (error) {
       console.error('Error during submission:', error);
     }
-  };
+    };
 
    return (
     <div className="main-container">
@@ -80,7 +80,7 @@ const App: React.FC = () => {
       <div>
         <AirportAutocomplete onAirportSelect={handleDepartureAirportSelect} />
         <AirportAutocomplete onAirportSelect={handleArrivalAirportSelect} />
-        <h1>Total Distance: {totalDistance}</h1>
+        <h1>Total Distance: {parseInt(totalDistance) / 1.852} NM </h1>
       </div>
       <div>
         <MapWithLine

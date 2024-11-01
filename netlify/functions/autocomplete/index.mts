@@ -2,15 +2,15 @@ import type { Context } from "@netlify/functions";
 import axios from "axios";
 
 export default async (req: Request, context: Context) => {
-  const url = new URL(req.url);
-  const input = url.searchParams.get("input");
+  let url = new URL(req.url);
+  let input = url.searchParams.get("input");
 
   if (!input) {
     return new Response(JSON.stringify({ error: "Input query parameter is required" }), { status: 400 });
   }
 
   try {
-    const response = await axios.get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
+    let response = await axios.get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
       params: { input, key: Netlify.env.get("GOOGLE_API_KEY") }
     });
     return new Response(JSON.stringify(response.data), {

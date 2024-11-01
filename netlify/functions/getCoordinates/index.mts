@@ -9,13 +9,13 @@ export default async (req: Request, context: Context) => {
   }
 
   try {
-    const response = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
+    let response = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
       params: { place_id: placeId, fields: "geometry", key: Netlify.env.get("GOOGLE_API_KEY") }
     });
 
-    const data = response.data;
+    let data = response.data;
     if (data.result && data.result.geometry && data.result.geometry.location) {
-      const location = data.result.geometry.location;
+        let location = data.result.geometry.location;
       return new Response(JSON.stringify({ latitude: location.lat, longitude: location.lng }), {
         headers: { "Content-Type": "application/json" }
       });
